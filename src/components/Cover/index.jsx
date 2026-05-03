@@ -117,16 +117,21 @@ export default function Cover({ onOpen, coverOpen, isMobile }) {
             <p className="cover__bio-role">Cartographer of Complex Systems</p>
             <div className="cover__bio-rule" />
             <p className="cover__bio-para">
-              Took apart VCR players and cassette decks as a kid. Designed video games as a career.
-              Both taught me to follow cause and effect until it gives something up.
+              I have always been drawn to how things work — the sheer mechanics of a system, the physics
+              beneath the surface. My father was a carpenter. I learned young that machines operated on
+              principles, not magic. Understanding that process has been the constant thread.
             </p>
             <p className="cover__bio-para">
-              The work I'm drawn to has no playbook. Resourcefulness is the only option —
-              the outcome matters immediately for a real person.
+              I believe with enough time and sincere effort, anyone can understand these solutions and
+              repeat the process.
+            </p>
+            <p className="cover__bio-para">
+              My partner once joked that I am Gandalf, and that deliverables arrive precisely when they
+              mean to.
             </p>
             <p className="cover__bio-closing">
-              If you've found this map, you're probably in the middle of a complex problem of your own.
-              Good. That's what it's here for.
+              The MORIA framework is how I navigate complexity. If you are running on empty and looking
+              for a path through, this map was made for you.
             </p>
             <div className="cover__bio-rule" />
             <a className="cover__bio-cta" href="mailto:marck.ernestthornton@gmail.com">
@@ -163,8 +168,13 @@ export default function Cover({ onOpen, coverOpen, isMobile }) {
             <h1 className="cover__title">The MORIA Framework</h1>
             <div className="cover__rule" />
             <p className="cover__tagline">
-              Journey through MORIA.<br />
-              Where systems thinking meets real solutions.
+              A real case study with Joe M.,<br /> 
+              guided by the MORIA framework.<br />
+              Follow the journey from<br /> 
+              broken system to working solution.
+            </p>
+            <p className="cover__lead">
+              Lost in the problem? The map is here.
             </p>
             <p className="cover__hint">
               map&nbsp;&nbsp;<span aria-hidden="true">←</span>&nbsp;&nbsp;·&nbsp;&nbsp;swipe&nbsp;&nbsp;·&nbsp;&nbsp;<span aria-hidden="true">→</span>&nbsp;&nbsp;bio
@@ -191,8 +201,13 @@ export default function Cover({ onOpen, coverOpen, isMobile }) {
               <h1 className="cover__title">The MORIA Framework</h1>
               <div className="cover__rule" />
               <p className="cover__tagline">
-                Journey through MORIA.<br />
-                Where systems thinking meets real solutions.
+                A real case study with Joe M.,<br /> 
+                guided by the MORIA framework.<br />
+                Follow the journey from<br /> 
+                broken system to working solution.
+              </p>
+              <p className="cover__lead">
+                Lost in the problem? The map is here.
               </p>
             </div>
 
@@ -202,16 +217,21 @@ export default function Cover({ onOpen, coverOpen, isMobile }) {
                 <p className="cover__bio-role">Cartographer of Complex Systems</p>
                 <div className="cover__bio-rule" />
                 <p className="cover__bio-para">
-                  Took apart VCR players and cassette decks as a kid. Designed video games as a career.
-                  Both taught me to follow cause and effect until it gives something up.
+                  I have always been drawn to how things work — the sheer mechanics of a system, the
+                  physics beneath the surface. My father was a carpenter. I learned young that machines
+                  operated on principles, not magic. Understanding that process has been the constant thread.
                 </p>
                 <p className="cover__bio-para">
-                  The work I'm drawn to has no playbook. Resourcefulness is the only option —
-                  the outcome matters immediately for a real person.
+                  I believe with enough time and sincere effort, anyone can understand these solutions and
+                  repeat the process.
+                </p>
+                <p className="cover__bio-para">
+                  My partner once joked that I am Gandalf, and that deliverables arrive precisely when
+                  they mean to.
                 </p>
                 <p className="cover__bio-closing">
-                  If you've found this map, you're probably in the middle of a complex problem of your own.
-                  Good. That's what it's here for.
+                  The MORIA framework is how I navigate complexity. If you are running on empty and
+                  looking for a path through, this map was made for you.
                 </p>
                 <div className="cover__bio-rule" />
                 <a className="cover__bio-cta" href="mailto:marck.ernestthornton@gmail.com">

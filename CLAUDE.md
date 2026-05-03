@@ -6,7 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## MORIA Framework — Claude Code Context
 
-This is the project root for `marckernest.com/moria-framework`: an immersive portfolio landing page built around the MORIA systems thinking methodology. The experience is a pannable, zoomable parchment map with five city markers, each representing a phase of the framework. The visitor doesn't read about how Marck thinks — they experience it.
+This is the project root for the MORIA Framework: an immersive portfolio landing page built around the MORIA systems thinking methodology. The experience is a pannable, zoomable parchment map with five city markers, each representing a phase of the framework. The visitor doesn't read about how Marck thinks — they experience it.
+
+**Live at:** <https://moria-framework.vercel.app/>
+**Repo:** <https://github.com/marckernest/moria-framework>
 
 Read this file fully before starting any task. Then read the docs listed below.
 
@@ -27,15 +30,13 @@ All reference material lives in `docs/`. Read these before building anything:
 
 - **React** + **Framer Motion** + **Vite**
 - **Google Fonts**: IM Fell English (headings, place names), Crimson Text (body)
-- **GitHub** for version control
-- **Vercel** for hosting — currently deployed at root (`base: '/'`). Will move to `/moria-framework` when marckernest.com has other projects alongside it.
+- **GitHub** for version control — `marckernest/moria-framework`
+- **Vercel** for hosting — deployed at root (`base: '/'`). Will move to `/moria-framework` when marckernest.com has other projects alongside it.
 - No UI libraries. No component frameworks. CSS variables from the design system only.
 
 ---
 
 ## Dev Commands
-
-Once the Vite scaffold exists (`npm create vite@latest . -- --template react`):
 
 ```bash
 npm install          # install deps (includes framer-motion)
@@ -44,7 +45,7 @@ npm run build        # production build to dist/
 npm run preview      # serve the production build locally
 ```
 
-`vite.config.js` must set `base: '/moria-framework'` for the Vercel subdirectory deployment to resolve assets correctly.
+Vercel auto-deploys on every push to `main`. No manual deploy step needed.
 
 ---
 
@@ -52,13 +53,24 @@ npm run preview      # serve the production build locally
 
 State lives in `App.jsx` and flows down:
 
-- **`mapTransform`** — `{ x, y, scale }` — owned by `MapCanvas`, drives the CSS transform on the canvas element. Pan via pointer drag; zoom via wheel/pinch.
-- **`activeStage`** — `string | null` — which city is expanded. Set by `CityMarker` click, cleared by `ContentPanel` close. Only one panel open at a time.
-- **`coverOpen`** — `boolean` — whether the folded cover has been dragged open. Transitions once; the cover unmounts after the reveal animation completes.
+- **`coverOpen`** — `boolean` — whether the cover has been swiped open. Cover stays mounted at all times; when closed, it animates back to `x: 0`. The `← cover` button and the map's right-edge back-swipe both set this to `false`.
+- **`activeStage`** — `string | null` — which city's content panel is open. Set by city click in `MapSVG`, cleared by `ContentPanel` close or stage navigation. Only one panel open at a time.
+- **`activeOrigin`** — `{ x, y }` — viewport coordinates of the clicked city at the moment of click, used to origin the ink-bleed expand animation in `ContentPanel`.
 
-`src/data/stages.js` is the single source of truth for city identity — each entry has `id`, `name`, `moiraStage`, `position` (as percentage coords on the map canvas), and the full panel content drawn from `docs/MORIA_Framework.md`. `CityMarker` and `ContentPanel` both receive a stage object from this array.
+`src/data/stages.js` is the single source of truth for city identity — each entry has `id`, `name`, `moiraStage`, `position` (as percentage coords on the map canvas), and the full panel content drawn from `docs/MORIA_Framework.md`.
 
 The ink-bleed panel expand animation originates at the clicked city's position on the canvas, not the viewport — `ContentPanel` needs the city's canvas coordinates translated to viewport coordinates at the moment of click.
+
+### Cover — mobile vs desktop
+
+Cover detects mobile via `src/hooks/useIsMobile.js` (breakpoint: 768px). On mobile, the cover is a horizontal carousel:
+
+- **Page 0 (cover face)**: compass rose, title, tagline, swipe hint
+- **Page -1 (bio panel)**: name, role, bio copy, email CTA — a sibling `motion.div` whose x is derived as `coverX + window.innerWidth`. The bio panel has its own touch handlers since the cover's `motion.div` is off-screen when bio is active.
+
+Swipe left from cover → bio. Swipe right from bio → cover. Swipe right from cover → map.
+
+On desktop, the cover renders the full tri-fold layout (left panel: compass + hint; center: title + tagline; right: bio cartouche).
 
 ---
 
@@ -97,19 +109,19 @@ All colour and type decisions are final. Do not introduce new values.
 ## Current Project Status
 
 ### Content (Phase 1)
-- Five stage panels: **complete** — content is in `docs/MORIA_Framework.md`, approved and ready to implement
-- Front cover copy: **in progress** — title, tagline, and lead line are set; drag prompt copy needs finalising
-- Bio: source material gathered, draft not yet written
+
+- Five stage panels: **complete** — content is in `docs/MORIA_Framework.md`, approved and implemented
+- Cover copy: **complete** — title, tagline, drag/swipe hints, bio text all implemented
 - Case study distillation (short version for non-technical readers): not started
-- Back cover copy: not started
 
 ### Design (Phase 2)
+
 - Core decisions: **locked** (palette, type, layout, interactions, terrain style, map feel)
-- Open: map composition (city placement, path curve), city marker design, content panel layout inside the map, compass rose, parchment texture weight
+- Implemented: map composition, city markers, content panel layout, compass rose, parchment texture
 
 ### Build (Phase 3 onward)
-- **Starting fresh.** No prior code on disk. A previous session generated code in chat but it was not saved.
-- Scaffold with Vite + React. Start from zero.
+
+- **Shipped.** Site is live at <https://moria-framework.vercel.app/>
 
 ---
 
@@ -118,13 +130,15 @@ All colour and type decisions are final. Do not introduce new values.
 These rules mirror the working model from the product description. Stick to them.
 
 ### Claude Code decides alone
+
 - All code generation, component structure, animation logic
 - SVG asset creation (terrain, compass rose, city markers, border treatments)
 - CSS texture and atmosphere work (parchment noise, fold lines, vignette)
-- CI/CD config (`.gitlab-ci.yml`), Vercel config (`vercel.json`)
-- Back cover copy synthesis and case study distillation (drafts for Marck's review)
+- Vercel config (`vercel.json`)
+- Case study distillation (drafts for Marck's review)
 
 ### Always flag before building
+
 - Any decision that affects the visual feel or layout composition
 - Map composition choices (where cities sit, how the path curves, terrain placement)
 - City marker design direction
@@ -133,6 +147,7 @@ These rules mirror the working model from the product description. Stick to them
 - Anything where two reasonable approaches exist and the wrong one would mean a rebuild
 
 ### Marck's calls only
+
 - Parchment texture weight (how aged the paper feels)
 - All feel and composition reviews — these happen on real devices, not in previews
 - Bio source material and personal voice
@@ -151,41 +166,49 @@ These rules mirror the working model from the product description. Stick to them
 
 ---
 
-## Folder Structure (target)
+## Folder Structure (actual)
 
-```
+```text
 /
+├── .gitignore
 ├── CLAUDE.md               ← you are here
+├── index.html
+├── package.json
+├── vite.config.js
+├── vercel.json
 ├── docs/                   ← project reference (read-only during build)
 │   ├── design.md
 │   ├── MORIA_Framework.md
 │   ├── MORIA_Product_Description.md
 │   └── MORIA_Project_Plan.md
-├── src/
-│   ├── components/
-│   │   ├── Cover/          ← folded map cover, drag-to-open gesture
-│   │   ├── MapCanvas/      ← pannable zoomable canvas, terrain, path
-│   │   ├── CityMarker/     ← five markers with labels and hover states
-│   │   ├── ContentPanel/   ← ink-bleed expand, stage content layout
-│   │   └── BackCover/      ← bio, closing statement, CTA
-│   ├── assets/
-│   │   └── svg/            ← terrain elements, compass rose, decorative border
-│   ├── styles/
-│   │   └── globals.css     ← CSS variables, base styles, font imports
-│   ├── data/
-│   │   └── stages.js       ← MORIA stage content (drawn from MORIA_Framework.md)
-│   └── App.jsx
-├── index.html
-├── vite.config.js
-├── vercel.json
-└── .gitlab-ci.yml
+└── src/
+    ├── App.jsx
+    ├── main.jsx
+    ├── components/
+    │   ├── Cover/
+    │   │   ├── index.jsx       ← cover face + mobile bio panel, drag-to-open
+    │   │   ├── Cover.css
+    │   │   └── CompassRose.jsx
+    │   ├── MapCanvas/
+    │   │   ├── index.jsx       ← pannable zoomable canvas, city markers, terrain
+    │   │   ├── MapSVG.jsx      ← all SVG: terrain, paths, city markers
+    │   │   └── MapCanvas.css
+    │   └── ContentPanel/
+    │       ├── index.jsx       ← ink-bleed expand, page swipe, MORIA nav
+    │       └── ContentPanel.css
+    ├── data/
+    │   └── stages.js           ← MORIA stage content (drawn from MORIA_Framework.md)
+    ├── hooks/
+    │   └── useIsMobile.js      ← matchMedia hook, breakpoint 768px
+    └── styles/
+        └── globals.css         ← CSS variables, base styles, font imports
 ```
 
 ---
 
 ## Key Constraints to Remember
 
-1. No separate mobile layout. The map experience is the same on desktop and mobile — pan and zoom with thumbs.
+1. The map experience is the same on desktop and mobile — pan and zoom with thumbs. The cover has mobile-specific behaviour (bi-directional swipe carousel) but the map itself does not.
 2. Performance is part of the experience. Lag on pan or stutter on panel open breaks the immersion.
 3. All visual assets are CSS and SVG. No external illustration or image files.
 4. The five cities and their MORIA stage mapping (locked):

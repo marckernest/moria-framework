@@ -126,6 +126,16 @@
   max-width: 100%;
 }
 
+.cover__lead {
+  font-family: var(--font-body);
+  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+  line-height: 1.5;
+  color: var(--color-accent);
+  margin: var(--space-4) 0 0;
+  max-width: 100%;
+  letter-spacing: 0.01em;
+}
+
 /* Drag hint — breathes slowly to signal interactivity */
 @keyframes breathe {
   0%, 100% { opacity: 0.38; }
