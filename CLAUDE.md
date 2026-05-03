@@ -27,8 +27,8 @@ All reference material lives in `docs/`. Read these before building anything:
 
 - **React** + **Framer Motion** + **Vite**
 - **Google Fonts**: IM Fell English (headings, place names), Crimson Text (body)
-- **GitLab** for version control
-- **Vercel** for hosting — base path: `/moria-framework`
+- **GitHub** for version control
+- **Vercel** for hosting — currently deployed at root (`base: '/'`). Will move to `/moria-framework` when marckernest.com has other projects alongside it.
 - No UI libraries. No component frameworks. CSS variables from the design system only.
 
 ---
