@@ -1,0 +1,112 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Core palette — locked */
+  --color-ink:          #1a1a18;
+  --color-paper:        #f5f2eb;
+  --color-cream:        #ede9de;
+  --color-rule:         #c8c2b0;
+  --color-accent:       #2a5c45;
+  --color-accent-light: #e8f0ec;
+  --color-danger:       #8b2e2e;
+
+  /* Semantic tokens */
+  --fg-primary:   var(--color-ink);
+  --fg-secondary: #5a564e;
+  --fg-tertiary:  #8a8578;
+  --fg-invert:    var(--color-paper);
+  --fg-accent:    var(--color-accent);
+
+  --surface-1: var(--color-paper);
+  --surface-2: var(--color-cream);
+  --surface-3: #e4e0d4;
+
+  --border-default: 1px solid var(--color-rule);
+  --border-faint:   1px solid #dbd7cc;
+  --border-strong:  2px solid var(--color-rule);
+
+  /* Typography — parchment/cartographic register */
+  --font-display: 'IM Fell English', 'Palatino Linotype', 'Georgia', serif;
+  --font-body:    'Crimson Text', 'Palatino Linotype', 'Georgia', serif;
+  --font-mono:    'Courier New', 'Courier', monospace;
+
+  /* Type scale */
+  --text-xs:   0.6875rem;
+  --text-sm:   0.75rem;
+  --text-base: 1rem;
+  --text-lg:   1.25rem;
+  --text-xl:   1.5rem;
+  --text-2xl:  2rem;
+  --text-3xl:  2.75rem;
+  --text-4xl:  3.5rem;
+
+  /* Spacing — 4px base unit */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 128px;
+
+  /* Radius */
+  --radius-none: 0;
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-ink);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--fg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-shell {
+  width: 100%;
+  height: 100%;
+  background: var(--color-ink);
+  position: relative;
+}
+
+.flip-map-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  background: none;
+  border: 1px solid var(--color-rule);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-tertiary);
+  padding: 6px 14px;
+  opacity: 0.6;
+  transition: opacity 0.2s, color 0.2s;
+}
+.flip-map-btn:hover {
+  opacity: 1;
+  color: var(--color-ink);
+}

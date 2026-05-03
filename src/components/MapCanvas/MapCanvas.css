@@ -1,0 +1,76 @@
+.map-viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  cursor: grab;
+  background: var(--color-ink);
+  touch-action: none;
+}
+
+.map-canvas {
+  position: absolute;
+  width: 3000px;
+  height: 2000px;
+  transform-origin: 0 0;
+  background-color: var(--color-paper);
+  will-change: transform;
+}
+
+/* Grain — same approach as cover, tiled across the full canvas */
+.map-canvas__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+}
+
+/* Edge vignette on the canvas surface */
+.map-canvas__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 85% 80% at 50% 50%,
+    transparent 28%,
+    rgba(26, 26, 24, 0.10) 62%,
+    rgba(26, 26, 24, 0.32) 100%
+  );
+}
+
+/* Fold creases — vertical at 30% and 63% of canvas width, horizontal at 50% */
+.map-canvas__fold {
+  position: absolute;
+  pointer-events: none;
+}
+
+.map-canvas__fold--v1,
+.map-canvas__fold--v2 {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(26, 26, 24, 0.07) 4%,
+    rgba(26, 26, 24, 0.07) 96%,
+    transparent
+  );
+}
+
+.map-canvas__fold--v1::after,
+.map-canvas__fold--v2::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 1px;
+  width: 10px;
+  background: linear-gradient(to right, rgba(26, 26, 24, 0.04), transparent);
+}
+
+.map-canvas__fold--v1 { left: 30%; }
+.map-canvas__fold--v2 { left: 63%; }
+

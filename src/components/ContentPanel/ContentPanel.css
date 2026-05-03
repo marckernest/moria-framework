@@ -1,0 +1,287 @@
+.content-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-paper);
+  clip-path: circle(0% at var(--ox, 50%) var(--oy, 50%));
+  transition: clip-path 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.content-panel.is-open {
+  clip-path: circle(150% at var(--ox, 50%) var(--oy, 50%));
+}
+
+/* Texture overlays */
+.content-panel__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.10;
+  mix-blend-mode: multiply;
+}
+
+.content-panel__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 90% 85% at 50% 50%,
+    transparent 35%,
+    rgba(26, 26, 24, 0.06) 65%,
+    rgba(26, 26, 24, 0.18) 100%
+  );
+}
+
+/* Header */
+.content-panel__header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--color-rule);
+  flex-shrink: 0;
+}
+
+.content-panel__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--color-rule);
+  padding: 4px 8px;
+  opacity: 0.7;
+  transition: opacity 0.2s, color 0.2s;
+  line-height: 1;
+}
+.content-panel__close:hover {
+  opacity: 1;
+  color: var(--color-ink);
+}
+
+.content-panel__moria {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.content-panel__moria-letter {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--color-rule);
+  padding: 2px 5px;
+  opacity: 0.65;
+  transition: opacity 0.2s, color 0.2s;
+  line-height: 1;
+}
+.content-panel__moria-letter:hover {
+  opacity: 1;
+  color: var(--color-ink);
+}
+.content-panel__moria-letter.is-active {
+  color: var(--color-accent);
+  opacity: 1;
+}
+.content-panel__moria-dot {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  color: var(--color-rule);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Track */
+.content-panel__track-wrap {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  overflow: hidden;
+  cursor: grab;
+}
+.content-panel__track-wrap:active {
+  cursor: grabbing;
+}
+
+.content-panel__track {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  will-change: transform;
+}
+
+.content-panel__page {
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  -webkit-overflow-scrolling: touch;
+}
+
+.content-panel__page-inner {
+  width: 100%;
+  max-width: 680px;
+  padding: 52px 36px 64px;
+}
+
+/* Intro page */
+.content-panel__stage-label {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--color-accent);
+  margin: 0 0 18px;
+  opacity: 0.9;
+}
+
+.content-panel__stage-name {
+  font-family: 'IM Fell English', Georgia, serif;
+  font-size: clamp(36px, 5.5vw, 62px);
+  color: var(--color-ink);
+  margin: 0 0 10px;
+  line-height: 1.1;
+  font-weight: normal;
+}
+
+.content-panel__location {
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 19px;
+  font-style: italic;
+  color: var(--color-rule);
+  margin: 0 0 28px;
+  line-height: 1.4;
+}
+
+.content-panel__rule {
+  width: 44px;
+  height: 1px;
+  background: var(--color-rule);
+  margin: 0 0 28px;
+}
+
+.content-panel__intro {
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 20px;
+  line-height: 1.68;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+/* Step pages */
+.content-panel__step-num {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--color-rule);
+  margin: 0 0 18px;
+  opacity: 0.7;
+}
+
+.content-panel__step-heading {
+  font-family: 'IM Fell English', Georgia, serif;
+  font-size: clamp(20px, 3vw, 34px);
+  color: var(--color-ink);
+  margin: 0 0 24px;
+  line-height: 1.3;
+  font-weight: normal;
+}
+
+.content-panel__step-body {
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.72;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+/* Footer */
+.content-panel__footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  border-top: 1px solid var(--color-rule);
+  flex-shrink: 0;
+}
+
+.content-panel__nav-city {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--color-rule);
+  padding: 4px 0;
+  min-width: 160px;
+  opacity: 0.75;
+  transition: opacity 0.2s, color 0.2s;
+  line-height: 1;
+}
+.content-panel__nav-city:hover:not(:disabled) {
+  opacity: 1;
+  color: var(--color-ink);
+}
+.content-panel__nav-city:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+.content-panel__nav-city--prev { text-align: left; }
+.content-panel__nav-city--next { text-align: right; }
+
+.content-panel__nav-center {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.content-panel__nav-btn {
+  background: none;
+  border: 1px solid var(--color-rule);
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  color: var(--color-ink);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.65;
+  transition: opacity 0.2s;
+  line-height: 1;
+}
+.content-panel__nav-btn:hover:not(:disabled) {
+  opacity: 1;
+}
+.content-panel__nav-btn:disabled {
+  opacity: 0.18;
+  cursor: default;
+}
+
+.content-panel__nav-count {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--color-rule);
+  min-width: 40px;
+  text-align: center;
+  opacity: 0.8;
+}

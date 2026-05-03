@@ -1,0 +1,312 @@
+.cover {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-x;
+  overflow: hidden;
+  background-color: var(--color-paper);
+}
+
+.cover:active {
+  cursor: grabbing;
+}
+
+/* Fractal noise grain */
+.cover__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+}
+
+/* Edge darkening — aged paper */
+.cover__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 78% 68% at 50% 50%,
+    transparent 22%,
+    rgba(26, 26, 24, 0.16) 58%,
+    rgba(26, 26, 24, 0.44) 100%
+  );
+}
+
+/* Decorative map border — double rule */
+.cover__border {
+  position: absolute;
+  inset: 20px;
+  border: 1px solid var(--color-rule);
+  pointer-events: none;
+}
+
+.cover__border::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--color-rule);
+  opacity: 0.4;
+}
+
+/* Fold creases — uneven thirds, reading as tri-fold map backside */
+.cover__fold {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(26, 26, 24, 0.13) 6%,
+    rgba(26, 26, 24, 0.13) 94%,
+    transparent
+  );
+}
+
+.cover__fold::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 1px;
+  width: 12px;
+  background: linear-gradient(to right, rgba(26, 26, 24, 0.06), transparent);
+}
+
+.cover__fold--left  { left: 30%; }
+.cover__fold--right { left: 63%; }
+
+/* Content sits inside the center panel — between the two fold creases */
+.cover__content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 30%;
+  right: 37%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-5);
+  text-align: center;
+}
+
+.cover__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5.5vw, 4.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--fg-primary);
+  margin: 0 0 var(--space-5);
+  letter-spacing: 0.01em;
+}
+
+/* Thin decorative rule between title and tagline */
+.cover__rule {
+  width: 56px;
+  height: 1px;
+  background: var(--color-rule);
+  margin: 0 auto var(--space-5);
+  flex-shrink: 0;
+}
+
+.cover__tagline {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2vw, 1.375rem);
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--fg-primary);
+  margin: 0;
+  max-width: 100%;
+}
+
+/* Drag hint — breathes slowly to signal interactivity */
+@keyframes breathe {
+  0%, 100% { opacity: 0.38; }
+  50%       { opacity: 0.58; }
+}
+
+.cover__hint {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-tertiary);
+  margin: 0;
+  animation: breathe 3.5s ease-in-out infinite;
+}
+
+/* Mobile layout — single centred column */
+.cover__mobile-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  gap: var(--space-5);
+}
+
+.cover__mobile-content > * {
+  margin: 0;
+}
+
+.cover__mobile-content .cover__compass {
+  opacity: 0.72;
+}
+
+/* Left fold panel — compass + hint */
+.cover__left-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  pointer-events: none;
+}
+
+.cover__compass {
+  pointer-events: none;
+  opacity: 0.72;
+}
+
+/* Right fold panel — bio cartouche */
+.cover__right-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 37%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-5);
+}
+
+.cover__cartouche {
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid var(--color-rule);
+  padding: 28px 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cover__cartouche::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--color-rule);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.cover__bio-name {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--fg-primary);
+  margin: 0 0 var(--space-2);
+}
+
+.cover__bio-role {
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 1.2vw, 0.9375rem);
+  font-style: italic;
+  color: var(--fg-secondary);
+  margin: 0 0 var(--space-4);
+  line-height: 1.4;
+}
+
+.cover__bio-rule {
+  width: 36px;
+  height: 1px;
+  background: var(--color-rule);
+  margin: 0 auto var(--space-4);
+  flex-shrink: 0;
+}
+
+.cover__bio-para {
+  font-family: var(--font-body);
+  font-size: clamp(0.875rem, 1.3vw, 1rem);
+  line-height: 1.65;
+  color: var(--fg-primary);
+  margin: 0 0 var(--space-3);
+}
+
+.cover__bio-closing {
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 1.2vw, 0.9375rem);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--fg-secondary);
+  margin: var(--space-3) 0 var(--space-4);
+}
+
+.cover__bio-cta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  color: var(--fg-tertiary);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s, color 0.2s;
+}
+.cover__bio-cta:hover {
+  opacity: 1;
+  color: var(--color-accent);
+}
+
+/* Bio panel — mobile only, sits one viewport-width to the right of the cover face */
+.bio-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background-color: var(--color-paper);
+  overflow: hidden;
+}
+
+.bio-panel__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  gap: var(--space-4);
+  overflow-y: auto;
+}
+
+.bio-panel__content > * {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.bio-panel__hint {
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 480px) {
+  .cover__content {
+    padding: var(--space-7) var(--space-5);
+  }
+}
