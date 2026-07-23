@@ -72,6 +72,26 @@ Swipe left from cover → bio. Swipe right from bio → cover. Swipe right from 
 
 On desktop, the cover renders the full tri-fold layout (left panel: compass + hint; center: title + tagline; right: bio cartouche).
 
+### MapCanvas — pan/zoom is imperative, not React state
+
+The canvas lives in a fixed **3000×2000 coordinate space** (`MAP_WIDTH`/`canvasH` in `MapCanvas/index.jsx`, also passed to `MapSVG`). Every stage's `position` in `stages.js` is a `{ x, y }` **percentage** of that space, converted to canvas coordinates on demand (`stage.position.x / 100 * 3000`).
+
+Pan/zoom state (`x`, `y`, `scale`) is held in a plain `useRef`, not `useState` — `applyTransform()` writes `transform: translate(...) scale(...)` directly to the canvas DOM node every frame. This bypasses React's render cycle entirely for drag/pinch/wheel performance. Mouse (`onMouseDown/Move/Up`), single-finger touch (pan), two-finger touch (pinch-zoom), and wheel are all wired as raw event listeners in a `useEffect`, not JSX props, because `wheel`/`touchmove` need `{ passive: false }` to call `preventDefault()`.
+
+Two scripted camera moves ride on top of the imperative system by temporarily setting `canvasRef.current.style.transition` before assigning a new `t.current`, then clearing it after a timeout:
+- **Reveal**: cover opens → camera starts at a journey-wide overview (`getInitialTransform`), animates to The Shire centred (`getShireTransform`).
+- **Stage select**: `activeStage` changes → camera pans to that city's canvas coordinates.
+
+Returning to the cover from the map is a gesture, not a button: `MapCanvas` detects a fast, strongly-horizontal left swipe while the map's right edge is on-screen (`atRightEdge` check against `MAP_WIDTH * scale`) and calls `onReturnToCover`.
+
+### ContentPanel — page track + stage nav are independent axes
+
+Each stage's `content.steps` array becomes a horizontal page track: `pages = [null, ...stage.content.steps]`, page 0 is the intro, pages 1+ are steps. The track position is `translateX(calc(-page*100vw + dragOffset))`; `dragOffset` follows the pointer live (mouse or touch) and only commits to a page change past a 20%-of-viewport drag threshold, mirroring the same pattern `Cover` uses for its carousel.
+
+Navigating *between stages* (the MORIA letter nav, or the prev/next city buttons in the footer) is unrelated to the page track — it calls `onNavigate(id)` back up to `App.jsx`, which swaps `activeStage` and remounts page 0. Don't conflate "next page within a stage" with "next stage" — they're different state entirely (local `page` vs. lifted `activeStage`).
+
+The ink-bleed origin (`originX`/`originY` from `App.jsx`'s `activeOrigin`) is applied as CSS custom properties `--ox`/`--oy` on the panel root, not inline geometry — the expand animation itself lives in `ContentPanel.css`.
+
 ---
 
 ## Design System (locked)
